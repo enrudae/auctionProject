@@ -7,6 +7,9 @@ from .serializers import LotSerializer, NewBetSerializer, BuyersLotsSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 
+from django.http import JsonResponse
+from django.middleware.csrf import get_token
+
 
 class ActiveLotsAPIList(generics.ListCreateAPIView):
     queryset = Lot.objects.filter(is_available=True)
@@ -50,3 +53,7 @@ class BuyersLotsAPIList(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = Lot.objects.filter(current_buyer=self.request.user)
         return queryset
+
+
+def csrf(request):
+    return JsonResponse({'csrfToken': get_token(request)})

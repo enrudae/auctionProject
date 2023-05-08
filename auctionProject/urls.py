@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from django.urls import path, include, re_path
-from auction.views import ActiveLotsAPIList, LotAPIUpdate, LotAPIDestroy, NewBetInLotUpdate, BuyersLotsAPIList
+from auction.views import ActiveLotsAPIList, LotAPIUpdate, LotAPIDestroy, NewBetInLotUpdate, BuyersLotsAPIList, csrf
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 urlpatterns = [
@@ -13,6 +13,8 @@ urlpatterns = [
     path('api/buyerslots/', BuyersLotsAPIList.as_view()),
 
     path('api/register/', include('djoser.urls')),
+
+    path('api/csrf/', csrf),
 
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
