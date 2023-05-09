@@ -15,8 +15,8 @@ class Lot(models.Model):
     creation_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField()
     is_available = models.BooleanField(default=True)
-    creator = models.ForeignKey(User, verbose_name='Создатель', related_name='Создатель', on_delete=models.CASCADE)
-    current_buyer = models.ForeignKey(User, verbose_name='Покупатель', related_name='Покупатель', on_delete=models.CASCADE, blank=True, null=True)
+    creator = models.ForeignKey(User, verbose_name='Создатель', related_name='Creator', on_delete=models.CASCADE)
+    current_buyer = models.ForeignKey(User, verbose_name='Покупатель', related_name='Buyer', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.name
