@@ -13,6 +13,7 @@ urlpatterns = [
     path('api/delete-lot/<int:pk>/', LotAPIDestroy.as_view()),
     path('api/lot/<int:pk>/bet/', NewBetInLotUpdate.as_view()),
     path('api/buyerslots/', BuyersLotsAPIList.as_view()),
+    #path('api/user-info/<int:pk>', ),
 
     path('api/register/', include('djoser.urls')),
 

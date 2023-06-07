@@ -11,7 +11,6 @@ class Lot(models.Model):
     #current_price = models.DecimalField(max_digits=10, decimal_places=2)
     first_price = models.IntegerField() # расписать все эти ограничения дине
     current_price = models.IntegerField()
-    bet = models.IntegerField()
     creation_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField()
     is_available = models.BooleanField(default=True)

@@ -3,7 +3,8 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from .models import Lot
-from .serializers import LotSerializer, NewBetSerializer, BuyersLotsSerializer
+from django.contrib.auth.models import User
+from .serializers import LotSerializer, BuyersLotsSerializer, NewBetSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 
@@ -36,7 +37,10 @@ class NewBetInLotUpdate(generics.RetrieveUpdateAPIView):
         if instance.creator == request.user:
             return Response({"error: The user cannot perform this action"}, status=403)
 
-        instance.current_price += instance.bet
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        instance.current_price += serializer.validated_data.get('bet', 50)
+
         instance.current_buyer = request.user
         instance.save()
 
