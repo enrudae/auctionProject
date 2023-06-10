@@ -16,7 +16,6 @@ from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -77,7 +76,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'auctionProject.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -87,7 +85,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -107,7 +104,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -118,7 +114,6 @@ TIME_ZONE = 'Asia/Yekaterinburg'
 USE_I18N = True
 
 USE_TZ = True
-
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
@@ -162,7 +157,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': False,
@@ -191,3 +186,13 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+CELERY_TIMEZONE = 'Asia/Yekaterinburg'
+CELERY_TASK_TRACK_STARTED = True
+CELERY_BROKER_URL = 'redis://127.0.0.1:16379/0'
+#CELERY_RESULT_BACKEND = 'django-db'
+#CELERY_CACHE_BACKEND = 'django-cache'
+
+
+#CELERY_IMPORTS = ('auction.tasks',)
+#CELERY_APP = 'celery:app'
