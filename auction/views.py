@@ -33,12 +33,14 @@ class NewBetInLotUpdate(generics.RetrieveUpdateAPIView):
     def put(self, request, *args, **kwargs):
         instance = self.get_object()
         if instance.creator == request.user:
-            return Response({"error: The user cannot perform this action"}, status=403)
+            return Response({"error: Создатель не может участвовать в своем аукционе"}, status=403)
+
+        if not instance.is_available:
+            return Response({"error: Аукцион завершен"}, status=405)
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         bet = serializer.validated_data.get('bet', 50)
-
         if not bet or bet < 50:
             bet = 50
 

@@ -20,17 +20,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-x=9y34!pl!mcsb1()4#=3o9^&kh+*^m5q93(ibcx@@t0p)-pvx'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -40,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'auction.apps.AuctionConfig',
+    'storages',
     'corsheaders',
     'rest_framework',
     'djoser',
@@ -76,13 +73,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'auctionProject.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": "db",
+        "PORT": 5432,
+        "USER": os.getenv('DB_USER'),
+        "PASSWORD": os.getenv('DB_PASSWORD'),
+        "NAME": "db01"
     }
 }
 
@@ -118,11 +116,12 @@ USE_TZ = True
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
+    'http://localhost',
+    'http://127.0.0.1',
+    'http://0.0.0.0',
 ]
-CORS_ORIGIN_WHITELIST = ['http://localhost:3000', 'http://127.0.0.1:3000']
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', 'http://127.0.0.1:3000']
+CORS_ORIGIN_WHITELIST = ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://0.0.0.0']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://0.0.0.0']
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_HEADERS = [
@@ -135,6 +134,7 @@ CORS_ALLOW_HEADERS = [
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -189,10 +189,13 @@ SIMPLE_JWT = {
 
 CELERY_TIMEZONE = 'Asia/Yekaterinburg'
 CELERY_TASK_TRACK_STARTED = True
-CELERY_BROKER_URL = 'redis://127.0.0.1:16379/0'
-#CELERY_RESULT_BACKEND = 'django-db'
-#CELERY_CACHE_BACKEND = 'django-cache'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
 
 
-#CELERY_IMPORTS = ('auction.tasks',)
-#CELERY_APP = 'celery:app'
+# ----Yandex s3----
+DEFAULT_FILE_STORAGE = 'yandex_s3_storage.ClientDocsStorage'  # path to file we created before
+YANDEX_CLIENT_DOCS_BUCKET_NAME = os.getenv('YANDEX_CLIENT_DOCS_BUCKET_NAME')
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_S3_ENDPOINT_URL = 'https://storage.yandexcloud.net'
+AWS_S3_REGION_NAME = 'storage'
